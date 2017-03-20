@@ -15,7 +15,27 @@ class MarkovModel():
         self.model = model
         return model
 
-    def generate(self,seed=None, max_tokens=100):
+    def learn(self,tokens,n=2):
+        model = {}
+
+        for i in range(0,len(tokens)-n):
+            gram = tuple(tokens[i:i+n])
+            token = tokens[i+n]
+
+            if gram in model:
+                model[gram].append(token)
+            else:
+                model[gram] = [token]
+
+        final_gram = tuple(tokens[len(tokens) - n:])
+        if final_gram in model:
+            model[final_gram].append(None)
+        else:
+            model[final_gram] = [None]
+        self.model = model
+        return model
+
+    def generate(self,n=2,seed=None, max_tokens=100):
         if seed == None:
             seed = random.choice(self.model.keys())
         output = list(seed)
@@ -23,8 +43,13 @@ class MarkovModel():
 
         for i in range(0,max_tokens):
             # get next possible set of words from the seed word
-            possible_transitions = self.model[current]
-            current = random.choice(possible_transitions)
-            output.append(current)
+            if current in self.model:
+                possible_transitions = self.model[current]
+                choice = random.choice(possible_transitions)
+                if choice is None: break
+                output.append(choice)
+                current = tuple(output[-n:])
+            else:
+                break
 
         return output

@@ -36,8 +36,9 @@ print next(trigrams)
 
 mc = MarkovChain.MarkovModel()
 
-mc_model = mc.build_model(bigrams)
+#mc_model = mc.build_model(bigrams)
+mc_model2 = mc.learn(tokens,3)
 
-output = mc.generate()
+output = mc.generate(3)
 
 print ' '.join(output)
