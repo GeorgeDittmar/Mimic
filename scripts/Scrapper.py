@@ -7,10 +7,10 @@ from tweepy import API
 import json
 
 #Variables that contains the user credentials to access Twitter API
-access_token = "322252769-nuvQkethTfEScTA79PuDMAs3eyURCu7NuDPhKQBs"
-access_token_secret = "YI1h3HECNhsS9VDzsRN1DomWOTkTS9tfjOrCprqCrtdl1"
-consumer_key = "BgzpRqZU1BQEyHUczo2QWlsjI"
-consumer_secret = "Ubi3lFf1SZCT0zNYykUCcZIzirnlFWp2ALXTBVBZN6NHuy5iG8"
+access_token = ""
+access_token_secret = ""
+consumer_key = ""
+consumer_secret = ""
 
 
 
