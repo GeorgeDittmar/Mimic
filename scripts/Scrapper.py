@@ -33,7 +33,7 @@ if __name__ == '__main__':
     auth.set_access_token(access_token, access_token_secret)
     account = 'realDonaldTrump'
     api = API(auth)
-    new_tweets = api.user_timeline(screen_name=account,count=200)
+    new_tweets = api.user_timeline(screen_name=account,count=500)
     oldest_id = new_tweets[-1].id-1
     tweets = []
 
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
 
     json_set = json.dumps(json_results)
-    with open('data_repo/data.txt', 'w') as outfile:
+    with open('data_repo/data1.txt', 'w') as outfile:
         json.dump(json_results, outfile)
     #This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
     #stream.filter(track=['python', 'javascript', 'ruby'])

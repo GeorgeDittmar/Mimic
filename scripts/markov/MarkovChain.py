@@ -1,4 +1,5 @@
 import random
+
 class MarkovModel():
     def __init__(self):
         self.model = None
@@ -38,6 +39,7 @@ class MarkovModel():
     def generate(self,n=2,seed=None, max_tokens=100):
         if seed == None:
             seed = random.choice(self.model.keys())
+            print(seed)
         output = list(seed)
         current = seed
 
