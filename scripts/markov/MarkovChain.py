@@ -1,10 +1,10 @@
 import random
-
+import string
 class MarkovModel():
     def __init__(self):
         self.model = None
 
-    def build_model(self,ngrams,n=2):
+    def build_model(self, ngrams,n=2):
         model = dict()
         for ngram in ngrams:
             key = ngram[0]
@@ -39,19 +39,26 @@ class MarkovModel():
     def generate(self,n=2,seed=None, max_tokens=100):
         if seed == None:
             seed = random.choice(self.model.keys())
-            print(seed)
+
         output = list(seed)
+        output[0] = output[0].capitalize()
         current = seed
 
-        for i in range(0,max_tokens):
+        for i in range(n, max_tokens):
             # get next possible set of words from the seed word
             if current in self.model:
                 possible_transitions = self.model[current]
                 choice = random.choice(possible_transitions)
                 if choice is None: break
-                output.append(choice)
+
+                # check if choice is period and if so append to previous element
+                if choice == '.':
+                    output[-1] = output[-1] + choice
+                else:
+                    output.append(choice)
                 current = tuple(output[-n:])
             else:
-                break
-
+                # should return ending punctuation of some sort
+                if current not in string.punctuation:
+                    output.append('.')
         return output
