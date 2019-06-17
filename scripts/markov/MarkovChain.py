@@ -1,6 +1,9 @@
 import random
 import string
-class MarkovModel():
+
+
+class MarkovModel:
+
     def __init__(self):
         self.model = None
 
