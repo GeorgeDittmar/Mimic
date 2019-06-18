@@ -27,6 +27,3 @@ def bulk_json_load(path):
 def bulk_text_distributed_load(spark, path):
     ''' Takes a path and sends to Spark for distributed loading and preprocessing'''
     pass
-
-def bulk_json_distributed_load(spark, path):
-
