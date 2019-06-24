@@ -8,6 +8,9 @@ import PreProcess
 def train_model(tweets,n=1):
     pass
 
+def train(row):
+    pass
+
 def generate_tweet():
     pass
 
@@ -40,4 +43,4 @@ mc_model2 = mc.learn(tokens, 2)
 output = mc.generate(2, max_tokens=50)
 
 
-print ' '.join(output) + '.'
+print(' '.join(output) + '.')

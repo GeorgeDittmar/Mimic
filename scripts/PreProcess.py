@@ -1,6 +1,4 @@
 import glob
-from pyspark.sql import SparkSession
-from pyspark import SparkContext
 
 def tokenize(text):
     return [x for x in text.split()]
@@ -15,7 +13,7 @@ def bulk_txt_load(path):
     text = []
     for file in files:
         with open(file) as text_file:
-            lines = [x.strip().decode("utf-8") for x in text_file]
+            lines = [x.strip() for x in text_file]
             text.extend(lines)
 
     return text;
@@ -27,3 +25,20 @@ def bulk_json_load(path):
 def bulk_text_distributed_load(spark, path):
     ''' Takes a path and sends to Spark for distributed loading and preprocessing'''
     pass
+
+# little hacky, should make a better one
+def generate_adjacent_terms(ngrams):
+
+    # get the current ngram and then extra the first element of the next ngram tuple
+    adjacent_list = []
+    for i in range(0, len(ngrams)):
+        if(i == len(ngrams) - 1):
+            adjacent_tuple = (ngrams[i], "#END#")
+            adjacent_list.append(adjacent_tuple)
+        else:
+            adjacent_tuple = (ngrams[i], ngrams[i+1].split(" ")[-1])
+            adjacent_list.append(adjacent_tuple)
+
+
+    return adjacent_list
+
