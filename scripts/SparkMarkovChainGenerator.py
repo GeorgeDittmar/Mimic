@@ -24,7 +24,7 @@ ngram = NGram(n=2, inputCol='tokenized_text', outputCol='ngram')
 
 ngram_df = ngram.transform(tokenized_df)
 
-# create the key to possible terms adjacency list
+# create the ngram to adjacent term mappings
 ngram_adjacent_text = ngram_df.rdd \
     .map(lambda x: PreProcess.generate_adjacent_terms(x.asDict()['ngram']))\
     .flatMap(lambda xs: [x for x in xs]) \
