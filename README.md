@@ -1,2 +1,2 @@
-# Small-Hands-Dataset
-Dataset of President Elect Donald Trumps twitter account
+# Markov Text Generator
+Building some base markov chain based text generators in python and spark. Plan to use this to compare against deep learning appraoches.
