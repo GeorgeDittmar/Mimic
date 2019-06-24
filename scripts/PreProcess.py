@@ -9,7 +9,6 @@ def extract_tweets(dataset):
 def bulk_txt_load(path):
     """ Feed in directory of text files and tokenize"""
     files = glob.glob(path)
-    print(files)
     text = []
     for file in files:
         with open(file) as text_file:

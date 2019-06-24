@@ -11,7 +11,6 @@ spark = SparkSession.builder.master('local').appName("MarkovChain").getOrCreate(
 
 text_df = spark.read.text("../data_repo/*.txt", wholetext=True).withColumnRenamed('value', 'text')
 text_df = text_df.withColumn('text', trim(text_df.text))
-print(text_df.show())
 # tokenize the data and get a new dataframe
 tokenizer = Tokenizer(inputCol='text', outputCol='tokenized_text')
 
@@ -24,12 +23,13 @@ tokenized_df = tokenized_df.filter(size('tokenized_text') > 1)
 ngram = NGram(n=2, inputCol='tokenized_text', outputCol='ngram')
 
 ngram_df = ngram.transform(tokenized_df)
-print(ngram_df.show())
-ngram_rdd = ngram_df.rdd.map(lambda x: PreProcess.generate_adjacent_terms(x.asDict()['ngram']))
-print(ngram_rdd.take(1)[0])
 
-# print(ngram_rdd.take(1)[0].asDict()['ngram'])
-# ngram_rdd_flat = ngram_rdd.flatMap(lambda x: x.asDict()['ngram']).zipWithIndex()
-#
-# print(ngram_rdd_flat.take(10))
+# create the key to possible terms adjacency list
+ngram_adjacent_text = ngram_df.rdd \
+    .map(lambda x: PreProcess.generate_adjacent_terms(x.asDict()['ngram']))\
+    .flatMap(lambda xs: [x for x in xs]) \
+    .map(lambda y: (y[0], [y[1]])) \
+    .reduceByKey(lambda a, b: a + b)
+
+print(ngram_adjacent_text.take(100))
 
