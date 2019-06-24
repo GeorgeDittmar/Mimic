@@ -31,5 +31,5 @@ ngram_adjacent_text = ngram_df.rdd \
     .map(lambda y: (y[0], [y[1]])) \
     .reduceByKey(lambda a, b: a + b)
 
-print(ngram_adjacent_text.take(100))
+print(ngram_adjacent_text.lookup("the first")[0])
 
