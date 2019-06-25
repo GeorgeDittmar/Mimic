@@ -3,6 +3,7 @@ from pyspark.sql.functions import size, trim
 from pyspark.ml.feature import Tokenizer, NGram
 
 import PreProcess
+import random
 
 ''' Spark runner for markov chain generator code. WIP '''
 
@@ -31,5 +32,5 @@ ngram_adjacent_text = ngram_df.rdd \
     .map(lambda y: (y[0], [y[1]])) \
     .reduceByKey(lambda a, b: a + b)
 
-print(ngram_adjacent_text.lookup("the first")[0])
+print(random.choice(ngram_adjacent_text.lookup("the first")[0]))
 

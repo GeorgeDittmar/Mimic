@@ -36,4 +36,21 @@ class MarkovModelSpark:
         if seed == None:
             seed = random.choice(self.model_keys)
 
+        output = list(random.choice(self.ngram_model.lookup(seed)[0]))
+        output[0] = output[0].capitalize()
+        current = seed
+
+        for i in range(0, max_tokens):
+            if current == '#END#':
+                # stop execution
+                break
+
+            if current in self.model_keys:
+                next = random.choice(self.ngram_model.lookup(current)[0])
+                if next is None: break
+
+                output.append(next)
+                
+
+
 
