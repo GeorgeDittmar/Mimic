@@ -4,6 +4,7 @@ from pyspark.ml.feature import Tokenizer, NGram
 
 import PreProcess
 import random
+from MarkovModelSpark import MarkovModelSpark
 
 ''' Spark runner for markov chain generator code. WIP '''
 
@@ -21,16 +22,21 @@ tokenized_df = tokenized_df.filter(size('tokenized_text') > 1)
 
 #tokens_rdd = tokenized_df.rdd.flatMap(lambda x: [elm[0] for elm in x])
 
-ngram = NGram(n=2, inputCol='tokenized_text', outputCol='ngram')
+# ngram = NGram(n=2, inputCol='tokenized_text', outputCol='ngram')
+#
+# ngram_df = ngram.transform(tokenized_df)
+#
+# # create the ngram to adjacent term mappings
+# ngram_adjacent_text = ngram_df.rdd \
+#     .map(lambda x: PreProcess.generate_adjacent_terms(x.asDict()['ngram']))\
+#     .flatMap(lambda xs: [x for x in xs]) \
+#     .map(lambda y: (y[0], [y[1]])) \
+#     .reduceByKey(lambda a, b: a + b)
+#
+# print(random.choice(ngram_adjacent_text.lookup("the first")[0]))
 
-ngram_df = ngram.transform(tokenized_df)
+mms = MarkovModelSpark(spark, n=3)
+mms.learn(tokenized_df)
+result = mms.generate()
 
-# create the ngram to adjacent term mappings
-ngram_adjacent_text = ngram_df.rdd \
-    .map(lambda x: PreProcess.generate_adjacent_terms(x.asDict()['ngram']))\
-    .flatMap(lambda xs: [x for x in xs]) \
-    .map(lambda y: (y[0], [y[1]])) \
-    .reduceByKey(lambda a, b: a + b)
-
-print(random.choice(ngram_adjacent_text.lookup("the first")[0]))
-
+print(result)

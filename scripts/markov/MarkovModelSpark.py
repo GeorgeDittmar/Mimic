@@ -12,7 +12,7 @@ class MarkovModelSpark:
         self.model_keys = None
         self.n = n
 
-    def learn(self, text_df, local):
+    def learn(self, text_df):
         """Spark transformation to learn the adjacent terms of a given ngram"""
 
         ngram = NGram(n=self.n, inputCol='tokenized_text', outputCol='ngram')
@@ -27,30 +27,24 @@ class MarkovModelSpark:
         # create list of the keys in the model and store them
         self.model_keys = self.ngram_model.map(lambda x: x[0]).collect()
 
-    def generate(self, seed=None, n=2, max_tokens=125):
+    def generate(self, seed=None, max_tokens=125):
         """Generate text based on the model learned on the corpus"""
 
         if self.ngram_model is None:
             raise ValueError('Model cannot be None')
 
-        if seed == None:
+        if seed is None:
             seed = random.choice(self.model_keys)
 
-        output = list(random.choice(self.ngram_model.lookup(seed)[0]))
+        output = [seed]
         output[0] = output[0].capitalize()
         current = seed
 
         for i in range(0, max_tokens):
-            if current == '#END#':
-                # stop execution
-                break
-
             if current in self.model_keys:
-                next = random.choice(self.ngram_model.lookup(current)[0])
-                if next is None: break
+                next_token = random.choice(self.ngram_model.lookup(current)[0])
+                if next_token is None or next_token == '#END#': break
+                output.append(next_token)
+                current = " " .join(output[-self.n:])
 
-                output.append(next)
-                
-
-
-
+        return " ".join(output) + "."
