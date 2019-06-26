@@ -35,7 +35,7 @@ tokenized_df = tokenized_df.filter(size('tokenized_text') > 1)
 #
 # print(random.choice(ngram_adjacent_text.lookup("the first")[0]))
 
-mms = MarkovModelSpark(spark, n=3)
+mms = MarkovModelSpark(spark, n=2)
 mms.learn(tokenized_df)
 result = mms.generate()
 

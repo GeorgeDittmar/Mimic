@@ -36,7 +36,7 @@ class MarkovModelSpark:
         if seed is None:
             seed = random.choice(self.model_keys)
 
-        output = [seed]
+        output = seed.split(" ")
         output[0] = output[0].capitalize()
         current = seed
 
