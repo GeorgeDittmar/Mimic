@@ -31,7 +31,7 @@ class MarkovModelSpark:
         """Generate text based on the model learned on the corpus"""
 
         if self.ngram_model is None:
-            raise ValueError('Model cannot be None')
+            raise ValueError('Model has not been generated yet. Run the learn function first.')
 
         if seed is None:
             seed = random.choice(self.model_keys)

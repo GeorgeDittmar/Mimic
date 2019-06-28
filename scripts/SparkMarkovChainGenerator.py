@@ -1,9 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import size, trim
-from pyspark.ml.feature import Tokenizer, NGram
+from pyspark.ml.feature import Tokenizer
 
-import PreProcess
-import random
 from MarkovModelSpark import MarkovModelSpark
 
 ''' Spark runner for markov chain generator code. WIP '''
