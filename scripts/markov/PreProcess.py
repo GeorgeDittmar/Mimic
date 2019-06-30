@@ -21,9 +21,12 @@ def bulk_json_load(path):
     pass
 
 
-def bulk_text_distributed_load(spark, path):
+def bulk_text_distributed_load(spark_session, path):
     ''' Takes a path and sends to Spark for distributed loading and preprocessing'''
-    pass
+    return spark_session.read.text(path, wholetext=True).withColumnRenamed('value', 'text')
+
+def bulk_json_distributed_load(spark_session, path):
+    return spark_session.read.json(path)
 
 # little hacky, should make a better one
 def generate_adjacent_terms(ngrams):

@@ -1,7 +1,5 @@
 import nltk
 import json
-from pprint import pprint
-from collections import Counter
 from markov import MarkovChain
 import PreProcess
 
