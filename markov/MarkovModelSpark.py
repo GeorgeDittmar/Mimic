@@ -28,6 +28,9 @@ class MarkovModelSpark:
         # create list of the keys in the model and store them
         self.model_keys = self.ngram_model.map(lambda x: x[0]).collect()
 
+    def retrain(self, text_df, extend=False):
+        raise NotImplementedError("Retrain functionality has not been implemented yet.")
+
     def generate(self, seed=None, end_token_stop=True, max_tokens=125):
         """Generate text based on the model learned on the corpus"""
 
