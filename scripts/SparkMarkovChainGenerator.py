@@ -24,4 +24,6 @@ mms = MarkovModelSpark(spark, n=2)
 mms.learn(tokenized_df)
 result = mms.generate()
 
+mms.save_model("../test_pickle")
+mms.load_model("../text_pickle")
 print(result)

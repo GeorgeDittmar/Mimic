@@ -2,6 +2,7 @@ from pyspark.ml.feature import NGram
 
 import PreProcess
 import random
+import pickle
 
 
 class MarkovModelSpark:
@@ -42,10 +43,29 @@ class MarkovModelSpark:
 
         for i in range(0, max_tokens):
             if current in self.model_keys:
-                next_token = random.choice(self.ngram_model.lookup(current)[0])
-                if next_token is None or next_token == '#END#' and end_token_stop:
-                    break
+                next_token = self.__get_next_token(current)
+                if next_token is None or next_token == '#END#':
+                    if end_token_stop:
+                        break
+                    else:
+                        current = random.choice(self.model_keys)
+                        next_token = self.__get_next_token(current)
                 output.append(next_token)
-                current = " " .join(output[-self.n:])
+                current = " ".join(output[-self.n:])
 
         return " ".join(output)
+
+    def __get_next_token(self, current):
+        return random.choice(self.ngram_model.lookup(current)[0])
+
+    def save_model(self, file_path, spark_pickle=True):
+        if spark_pickle:
+            self.ngram_model.saveAsPickleFile(file_path)
+        else:
+            raise NotImplementedError("Only support for Spark based pickling currently implemented.")
+
+    def load_model(self, file_path, spark_pickle=True):
+        if spark_pickle:
+            self.ngram_model = self.spark_session.sparkContext.pickleFile(file_path)
+        else:
+            raise NotImplementedError("Only support for Spark based pickling currently implemented.")
