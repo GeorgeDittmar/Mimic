@@ -27,7 +27,7 @@ class MarkovModelSpark:
         # create list of the keys in the model and store them
         self.model_keys = self.ngram_model.map(lambda x: x[0]).collect()
 
-    def generate(self, seed=None, max_tokens=125):
+    def generate(self, seed=None, end_token_stop=True, max_tokens=125):
         """Generate text based on the model learned on the corpus"""
 
         if self.ngram_model is None:
@@ -43,8 +43,9 @@ class MarkovModelSpark:
         for i in range(0, max_tokens):
             if current in self.model_keys:
                 next_token = random.choice(self.ngram_model.lookup(current)[0])
-                if next_token is None or next_token == '#END#': break
+                if next_token is None or next_token == '#END#' and end_token_stop:
+                    break
                 output.append(next_token)
                 current = " " .join(output[-self.n:])
 
-        return " ".join(output) + "."
+        return " ".join(output)

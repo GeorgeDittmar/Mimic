@@ -1,6 +1,6 @@
 import nltk
 import json
-from markov import MarkovChain
+import MarkovChain
 import PreProcess
 
 def train_model(tweets,n=1):
