@@ -28,7 +28,11 @@ class MarkovModelSpark:
         # create list of the keys in the model and store them
         self.model_keys = self.ngram_model.map(lambda x: x[0]).collect()
 
-    def retrain(self, text_df, extend=False):
+    def retrain(self, text_df):
+        """Function to retrain a model given new text input so the model does not have to be fully retrained on all
+        the data but only the parts that are new. Assumes the text_df is in the same format as the already trained
+        model."""
+
         raise NotImplementedError("Retrain functionality has not been implemented yet.")
 
     def generate(self, seed=None, end_token_stop=True, max_tokens=125):
