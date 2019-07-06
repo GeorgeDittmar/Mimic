@@ -2,7 +2,6 @@ from pyspark.ml.feature import NGram
 
 import PreProcess
 import random
-import pickle
 
 
 class MarkovModelSpark:
