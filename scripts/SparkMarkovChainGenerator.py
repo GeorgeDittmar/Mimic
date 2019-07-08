@@ -22,7 +22,7 @@ tokenized_df = tokenizer.transform(total_df).drop('text')
 tokenized_df = tokenized_df.filter(size('tokenized_text') > 1)
 mms = MarkovModelSpark(spark, n=2)
 mms.learn(tokenized_df)
-result = mms.generate()
+result = mms.generate(end_token_stop=False)
 
 mms.save_model("../test_pickle")
 mms.load_model("../text_pickle")

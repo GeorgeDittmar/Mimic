@@ -7,18 +7,6 @@ class MarkovModel:
     def __init__(self):
         self.model = None
 
-    def build_model(self, ngrams,n=2):
-        model = dict()
-        for ngram in ngrams:
-            key = ngram[0]
-            val = ngram[-1]
-            if key in model:
-                model[key].append(val)
-            else:
-                model[key] = [val]
-        self.model = model
-        return model
-
     def learn(self,tokens,n=2):
         model = {}
 
