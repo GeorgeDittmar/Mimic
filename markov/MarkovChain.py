@@ -28,8 +28,8 @@ class MarkovModel:
         return model
 
     def generate(self,n=2,seed=None, max_tokens=100):
-        if seed == None:
-            seed = random.choice(self.model.keys())
+        if seed is None:
+            seed = random.choice(list(self.model.keys()))
 
         output = list(seed)
         output[0] = output[0].capitalize()

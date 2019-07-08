@@ -38,7 +38,7 @@ mc = MarkovChain.MarkovModel()
 
 #mc_model = mc.build_model(bigrams)
 mc_model2 = mc.learn(tokens, 2)
-output = mc.generate(2, max_tokens=50)
+output = mc.generate(2, max_tokens=125)
 
 
 print(' '.join(output) + '.')

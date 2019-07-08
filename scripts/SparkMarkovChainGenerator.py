@@ -20,10 +20,7 @@ tokenizer = Tokenizer(inputCol='text', outputCol='tokenized_text')
 # use sparks built in tokenizer for simplicity and filter out empty new lines from dataset
 tokenized_df = tokenizer.transform(total_df).drop('text')
 tokenized_df = tokenized_df.filter(size('tokenized_text') > 1)
-mms = MarkovModelSpark(spark, n=2)
+mms = MarkovModelSpark(spark, n=3)
 mms.learn(tokenized_df)
 result = mms.generate(end_token_stop=False)
-
-mms.save_model("../test_pickle")
-mms.load_model("../text_pickle")
 print(result)
