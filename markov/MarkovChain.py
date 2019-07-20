@@ -21,9 +21,9 @@ class MarkovModel:
 
         final_gram = tuple(tokens[len(tokens) - n:])
         if final_gram in model:
-            model[final_gram].append(None)
+            model[final_gram].append("#END#")
         else:
-            model[final_gram] = [None]
+            model[final_gram] = ["#END#"]
         self.model = model
         return model
 
@@ -40,7 +40,7 @@ class MarkovModel:
             if current in self.model:
                 possible_transitions = self.model[current]
                 choice = random.choice(possible_transitions)
-                if choice is None: break
+                if choice is "#END#" : break
 
                 # check if choice is period and if so append to previous element
                 if choice == '.':

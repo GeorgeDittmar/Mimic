@@ -18,6 +18,7 @@ class MarkovModelSpark:
         ngram = NGram(n=self.n, inputCol='tokenized_text', outputCol='ngram')
         ngram_df = ngram.transform(text_df)
         # create the ngram to adjacent term mappings
+        ngram_list = ngram_df.select("ngram").rdd.map(lambda r: r(0)).collect()
         self.ngram_model = ngram_df.rdd \
             .map(lambda x: PreProcess.generate_adjacent_terms(x.asDict()['ngram'])) \
             .flatMap(lambda xs: [x for x in xs]) \
@@ -34,7 +35,7 @@ class MarkovModelSpark:
 
         raise NotImplementedError("Retrain functionality has not been implemented yet.")
 
-    def generate(self, seed=None, end_token_stop=True, max_tokens=125):
+    def generate(self, seed=None, end_token_stop=True, max_tokens=200):
         """Generate text based on the model learned on the corpus"""
 
         if self.ngram_model is None:
