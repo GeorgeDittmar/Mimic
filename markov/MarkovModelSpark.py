@@ -18,12 +18,12 @@ class MarkovModelSpark:
         ngram = NGram(n=self.n, inputCol='tokenized_text', outputCol='ngram')
         ngram_df = ngram.transform(text_df)
         # create the ngram to adjacent term mappings
-        ngram_list = ngram_df.select("ngram").rdd.map(lambda r: r(0)).collect()
+        ngram_list = ngram_df.select("ngram").rdd.map(lambda r: r['ngram']).collect()
         self.ngram_model = ngram_df.rdd \
             .map(lambda x: PreProcess.generate_adjacent_terms(x.asDict()['ngram'])) \
             .flatMap(lambda xs: [x for x in xs]) \
             .map(lambda y: (y[0], [y[1]])) \
-            .reduceByKey(lambda a, b: a + b)
+            .reduceByKey(lambda a, b: a + b).collect()
 
         # create list of the keys in the model and store them
         self.model_keys = self.ngram_model.map(lambda x: x[0]).collect()
